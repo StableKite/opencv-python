@@ -38,6 +38,7 @@ subprocess.check_call([
     "pip",
     "install",
     *requirements,
+    "numpy>=2",
     "wheel",
     "twine",
     "cmake==4.3.2",
@@ -83,7 +84,7 @@ if ($Wheel.Count -ne 1) {
     throw "Expected exactly one Windows wheel, found $($Wheel.Count)."
 }
 
-& $VerifyPython -m pip install --no-index --no-deps $Wheel[0].FullName
+& $VerifyPython -m pip install $Wheel[0].FullName
 if ($LASTEXITCODE -ne 0) { throw 'Verification wheel install failed.' }
 
 $env:PYTHON_JIT = '1'

@@ -27,9 +27,9 @@ docker run --rm \
   --user 0 \
   -e PYTHON_JIT=1 \
   -e PYTHON_GIL=0 \
-  -e EXPECTED_PLATFORM \
-  -e BUILD_SDIST \
-  -e WHEEL_OUTPUT_DIR \
+  -e EXPECTED_PLATFORM="$EXPECTED_PLATFORM" \
+  -e BUILD_SDIST="$BUILD_SDIST" \
+  -e WHEEL_OUTPUT_DIR="$WHEEL_OUTPUT_DIR" \
   -v "$PWD:/io" \
   -w /io \
   "$IMAGE" \
@@ -106,6 +106,7 @@ subprocess.check_call([
     \"pip\",
     \"install\",
     *requirements,
+    \"numpy>=2\",
     \"wheel\",
     \"twine\",
     \"cmake==4.3.2\",
@@ -138,8 +139,6 @@ subprocess.check_call([
     PYTHON_JIT=1 PYTHON_GIL=0 \
       /tmp/verify/bin/python .github/scripts/ci_python_policy.py --verify
     /tmp/verify/bin/python -m pip install \
-      --no-index \
-      --no-deps \
       /tmp/repaired-wheel/*.whl
     PYTHON_JIT=1 PYTHON_GIL=0 \
       /tmp/verify/bin/python .github/scripts/ci_opencv_python.py smoke
