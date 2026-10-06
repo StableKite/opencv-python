@@ -1,0 +1,354 @@
+name: StableKite permanent CI
+
+on:
+  push:
+    branches:
+      - 5.x
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHON_JIT: "1"
+  PYTHON_GIL: "0"
+  DEVPI_SERVER: https://stablekite.com:4438/
+  DEVPI_TARGET_INDEX: https://stablekite.com:4438/StableKite/index/
+  OPENCV_MANYLINUX_X86_64_IMAGE: quay.io/opencv-ci/opencv-python-manylinux_2_28-x86-64:20260725
+  OPENCV_MANYLINUX_AARCH64_IMAGE: quay.io/opencv-ci/opencv-python-manylinux_2_28-aarch64:20260725
+  OPENCV_MUSLLINUX_X86_64_IMAGE: quay.io/opencv-ci/opencv-python-musllinux_1_2-x86-64:20260725
+  OPENCV_MUSLLINUX_AARCH64_IMAGE: quay.io/opencv-ci/opencv-python-musllinux_1_2-aarch64:20260725
+
+jobs:
+  windows_x86_64:
+    name: Windows x86_64 / free-threaded headless wheel validation
+    runs-on: windows-2025
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          submodules: false
+      - name: Checkout OpenCV product source
+        shell: bash
+        run: git submodule update --init --depth 1 opencv
+      - name: Set up CI Python
+        uses: ./.github/actions/setup-ci-python
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v2
+      - name: Build and validate free-threaded Windows wheel
+        shell: pwsh
+        run: .github/scripts/ci_build_windows.ps1
+      - name: Upload Windows validation wheel
+        uses: actions/upload-artifact@v7
+        with:
+          name: opencv-python-ft-windows-x86_64
+          if-no-files-found: error
+          path: ci-dist-windows/*.whl
+
+  glibc_x86_64:
+    name: Linux glibc x86_64 / free-threaded wheel and canonical sdist
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          submodules: false
+      - name: Checkout OpenCV product source
+        run: git submodule update --init --depth 1 opencv
+      - name: Build and validate in manylinux_2_28
+        shell: bash
+        run: |
+          bash .github/scripts/ci_build_linux.sh \
+            "$OPENCV_MANYLINUX_X86_64_IMAGE" \
+            manylinux_2_28_x86_64 \
+            ci-dist-glibc-x86_64 \
+            1
+      - name: Upload glibc x86_64 validation wheel
+        uses: actions/upload-artifact@v7
+        with:
+          name: opencv-python-ft-glibc-x86_64
+          if-no-files-found: error
+          path: ci-dist-glibc-x86_64/*.whl
+      - name: Upload canonical opencv-python sdist
+        uses: actions/upload-artifact@v7
+        with:
+          name: opencv-python-dist-sdist
+          if-no-files-found: error
+          path: ci-dist-sdist/*.tar.gz
+
+  glibc_aarch64:
+    name: Linux glibc aarch64 / free-threaded headless wheel validation
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          submodules: false
+      - name: Checkout OpenCV product source
+        run: git submodule update --init --depth 1 opencv
+      - name: Build and validate in manylinux_2_28
+        shell: bash
+        run: |
+          bash .github/scripts/ci_build_linux.sh \
+            "$OPENCV_MANYLINUX_AARCH64_IMAGE" \
+            manylinux_2_28_aarch64 \
+            ci-dist-glibc-aarch64 \
+            0
+      - name: Upload glibc aarch64 validation wheel
+        uses: actions/upload-artifact@v7
+        with:
+          name: opencv-python-ft-glibc-aarch64
+          if-no-files-found: error
+          path: ci-dist-glibc-aarch64/*.whl
+
+  musl_x86_64:
+    name: Linux musl x86_64 / free-threaded headless wheel validation
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          submodules: false
+      - name: Checkout OpenCV product source
+        run: git submodule update --init --depth 1 opencv
+      - name: Build and validate in musllinux_1_2
+        shell: bash
+        run: |
+          bash .github/scripts/ci_build_linux.sh \
+            "$OPENCV_MUSLLINUX_X86_64_IMAGE" \
+            musllinux_1_2_x86_64 \
+            ci-dist-musl-x86_64 \
+            0
+      - name: Upload musl x86_64 validation wheel
+        uses: actions/upload-artifact@v7
+        with:
+          name: opencv-python-ft-musl-x86_64
+          if-no-files-found: error
+          path: ci-dist-musl-x86_64/*.whl
+
+  musl_aarch64:
+    name: Linux musl aarch64 / free-threaded headless wheel validation
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          submodules: false
+      - name: Checkout OpenCV product source
+        run: git submodule update --init --depth 1 opencv
+      - name: Build and validate in musllinux_1_2
+        shell: bash
+        run: |
+          bash .github/scripts/ci_build_linux.sh \
+            "$OPENCV_MUSLLINUX_AARCH64_IMAGE" \
+            musllinux_1_2_aarch64 \
+            ci-dist-musl-aarch64 \
+            0
+      - name: Upload musl aarch64 validation wheel
+        uses: actions/upload-artifact@v7
+        with:
+          name: opencv-python-ft-musl-aarch64
+          if-no-files-found: error
+          path: ci-dist-musl-aarch64/*.whl
+
+  publish:
+    name: Publish validated opencv-python sdist to devpi
+    runs-on: ubuntu-24.04
+    needs:
+      - windows_x86_64
+      - glibc_x86_64
+      - glibc_aarch64
+      - musl_x86_64
+      - musl_aarch64
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          submodules: false
+      - name: Checkout OpenCV product source
+        run: git submodule update --init --depth 1 opencv
+      - name: Set up CI Python
+        uses: ./.github/actions/setup-ci-python
+      - name: Determine publish intent
+        id: publish_intent
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          set -euo pipefail
+          current_version="$(python .github/scripts/ci_opencv_python.py canonical-version --ref HEAD)"
+          should_publish=false
+          previous_version=""
+
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            should_publish=true
+            echo "Manual workflow_dispatch: publication requested."
+          elif [ "$EVENT_NAME" = "push" ]; then
+            if [ -z "${BEFORE_SHA:-}" ] || [[ "$BEFORE_SHA" =~ ^0+$ ]]; then
+              echo "::error::Push event has no usable before SHA; refusing to infer publication intent."
+              exit 1
+            fi
+            if ! git cat-file -e "${BEFORE_SHA}^{commit}" 2>/dev/null; then
+              echo "::error::Push before SHA is unavailable in checkout; refusing to infer publication intent."
+              exit 1
+            fi
+            if ! git cat-file -e "${BEFORE_SHA}:opencv" 2>/dev/null; then
+              echo "::error::Previous OpenCV gitlink is unavailable; refusing to infer publication intent."
+              exit 1
+            fi
+            previous_version="$(python .github/scripts/ci_opencv_python.py canonical-version --ref "$BEFORE_SHA")"
+            if [ "$previous_version" != "$current_version" ]; then
+              should_publish=true
+            fi
+          else
+            echo "::error::Unexpected event for publication intent: $EVENT_NAME"
+            exit 1
+          fi
+
+          echo "previous_version=${previous_version:-unavailable}"
+          echo "current_version=$current_version"
+          echo "should_publish=$should_publish"
+          echo "current_version=$current_version" >> "$GITHUB_OUTPUT"
+          echo "should_publish=$should_publish" >> "$GITHUB_OUTPUT"
+      - name: Validation-only push; publication skipped
+        if: steps.publish_intent.outputs.should_publish != 'true'
+        shell: bash
+        run: |
+          echo "OpenCV product version is unchanged; all five StableKite validation jobs passed and devpi publication is intentionally skipped."
+      - name: Download canonical sdist
+        if: steps.publish_intent.outputs.should_publish == 'true'
+        uses: actions/download-artifact@v8
+        with:
+          name: opencv-python-dist-sdist
+          path: dist
+      - name: Verify exact publish set
+        if: steps.publish_intent.outputs.should_publish == 'true'
+        shell: bash
+        env:
+          EXPECTED_KEY: ${{ steps.publish_intent.outputs.current_version }}
+        run: |
+          set -euo pipefail
+          python .github/scripts/ci_opencv_python.py verify-publish-set \
+            --dir dist \
+            --expected-key "$EXPECTED_KEY"
+      - name: Install publish tools
+        if: steps.publish_intent.outputs.should_publish == 'true'
+        run: python -m pip install --upgrade pip packaging twine devpi-client devpi-tokens
+      - name: Twine check
+        if: steps.publish_intent.outputs.should_publish == 'true'
+        run: python -m twine check dist/*
+      - name: Authenticated collision check and publish
+        if: steps.publish_intent.outputs.should_publish == 'true'
+        shell: bash
+        env:
+          DEVPI_TOKEN: ${{ secrets.DEVPI_TOKEN }}
+          DEVPI_CLIENTDIR: ${{ runner.temp }}/devpi-client
+          PIP_CONFIG_FILE: ${{ runner.temp }}/pip.conf
+        run: |
+          set -euo pipefail
+
+          TOKEN_FILE="$(mktemp)"
+          PROJECT_JSON="$(mktemp)"
+          PROJECT_ERR="$(mktemp)"
+          AFTER_JSON="$(mktemp)"
+          cleanup() {
+            rm -f "$TOKEN_FILE" "$PROJECT_JSON" "$PROJECT_ERR" "$AFTER_JSON" "$PIP_CONFIG_FILE"
+            rm -rf "$DEVPI_CLIENTDIR"
+          }
+          trap cleanup EXIT
+
+          if [ -z "${DEVPI_TOKEN:-}" ]; then
+            echo "::error::DEVPI_TOKEN is not available to this repository."
+            exit 1
+          fi
+
+          PUBLISH_VERSION="$(python .github/scripts/ci_opencv_python.py publish-version --dir dist)"
+          export PUBLISH_VERSION
+
+          printf '%s' "$DEVPI_TOKEN" > "$TOKEN_FILE"
+          chmod 600 "$TOKEN_FILE"
+
+          devpi use "$DEVPI_SERVER"
+          devpi token-login -f "$TOKEN_FILE"
+          devpi use --set-cfg "$DEVPI_TARGET_INDEX"
+
+          set +e
+          devpi getjson /StableKite/index/opencv-python > "$PROJECT_JSON" 2> "$PROJECT_ERR"
+          status=$?
+          set -e
+
+          if [ "$status" -eq 0 ]; then
+            PROJECT_JSON="$PROJECT_JSON" python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from packaging.version import InvalidVersion, Version
+
+          expected_text = os.environ["PUBLISH_VERSION"]
+          expected = Version(expected_text)
+          data = json.loads(Path(os.environ["PROJECT_JSON"]).read_text())
+          if not isinstance(data, dict):
+              raise SystemExit("Unexpected devpi project JSON schema")
+          payload = data.get("result", data)
+          if not isinstance(payload, dict):
+              raise SystemExit("Unexpected devpi project result schema")
+
+          parsed = []
+          for key in payload:
+              try:
+                  parsed.append((Version(str(key)), str(key)))
+              except InvalidVersion:
+                  continue
+
+          if expected.local is not None:
+              if any(version == expected for version, _ in parsed):
+                  raise SystemExit(
+                      f"Refusing publish; devpi already has {expected_text}"
+                  )
+          else:
+              bad = [text for version, text in parsed if version >= expected]
+              if bad:
+                  raise SystemExit(
+                      "Refusing publish; devpi already has conflicting/newer "
+                      f"versions: {bad}"
+                  )
+
+          print("Authenticated devpi collision check OK")
+          PY
+          else
+            cat "$PROJECT_JSON" >&2 || true
+            cat "$PROJECT_ERR" >&2 || true
+            if grep -Eqi '(^|[[:space:]])404[[:space:]]+Not Found([:[:space:]]|$)' "$PROJECT_JSON" "$PROJECT_ERR"; then
+              echo "Authenticated devpi project is not listed; publication is collision-free."
+            else
+              echo "::error::Could not reliably inspect opencv-python publication history on devpi."
+              exit 1
+            fi
+          fi
+
+          devpi upload dist/*
+
+          devpi getjson /StableKite/index/opencv-python > "$AFTER_JSON"
+          AFTER_JSON="$AFTER_JSON" python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          expected = os.environ["PUBLISH_VERSION"]
+          data = json.loads(Path(os.environ["AFTER_JSON"]).read_text())
+          if not isinstance(data, dict):
+              raise SystemExit("Unexpected devpi confirmation JSON schema")
+          payload = data.get("result", data)
+          if not isinstance(payload, dict) or expected not in payload:
+              raise SystemExit(
+                  f"Published version {expected} not confirmed by devpi"
+              )
+          print(f"devpi publication confirmed: opencv-python {expected}")
+          PY
