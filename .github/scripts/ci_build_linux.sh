@@ -38,8 +38,11 @@ docker run --rm \
     git config --global --add safe.directory /io/opencv
 
     SYSTEM_PYTHON="$(
-      find /opt/python -mindepth 2 -maxdepth 2 -type f -path "*/bin/python" \
-        | sort | head -n 1
+      for candidate in /opt/python/*/bin/python /opt/python/*/bin/python3; do
+        if [ -x "$candidate" ]; then
+          printf "%s\n" "$candidate"
+        fi
+      done | sort | head -n 1
     )"
     test -n "$SYSTEM_PYTHON"
     test -x "$SYSTEM_PYTHON"
