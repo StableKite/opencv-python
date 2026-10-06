@@ -199,10 +199,20 @@ jobs:
               echo "::error::Push before SHA is unavailable in checkout; refusing to infer publication intent."
               exit 1
             fi
-            if ! git cat-file -e "${BEFORE_SHA}:opencv" 2>/dev/null; then
-              echo "::error::Previous OpenCV gitlink is unavailable; refusing to infer publication intent."
+            previous_tree_entry="$(git ls-tree "$BEFORE_SHA" -- opencv)"
+            if [ -z "$previous_tree_entry" ] || [[ "$previous_tree_entry" == *$'\n'* ]]; then
+              echo "::error::Previous OpenCV gitlink tree entry is missing or ambiguous; refusing to infer publication intent."
               exit 1
             fi
+            IFS=$' \t' read -r previous_mode previous_type previous_gitlink previous_path <<< "$previous_tree_entry"
+            if [ "$previous_mode" != "160000" ] || \
+               [ "$previous_type" != "commit" ] || \
+               ! [[ "$previous_gitlink" =~ ^[0-9a-f]{40}$ ]] || \
+               [ "$previous_path" != "opencv" ]; then
+              echo "::error::Previous OpenCV gitlink tree entry is invalid; refusing to infer publication intent."
+              exit 1
+            fi
+            echo "previous_opencv_gitlink=$previous_gitlink"
             previous_version="$(python .github/scripts/ci_opencv_python.py canonical-version --ref "$BEFORE_SHA")"
             if [ "$previous_version" != "$current_version" ]; then
               should_publish=true
