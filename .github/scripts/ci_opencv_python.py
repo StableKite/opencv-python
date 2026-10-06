@@ -240,14 +240,16 @@ def _read_metadata_bytes(data: bytes) -> tuple[str, str]:
 
 def _read_sdist_metadata(path: Path) -> tuple[str, str]:
     with tarfile.open(path, "r:gz") as archive:
-        members = [
-            member
-            for member in archive.getmembers()
-            if member.isfile() and member.name.endswith("/PKG-INFO")
-        ]
+        members = []
+        for member in archive.getmembers():
+            if not member.isfile():
+                continue
+            parts = member.name.split("/")
+            if len(parts) == 2 and parts[1] == "PKG-INFO":
+                members.append(member)
         if len(members) != 1:
             raise SystemExit(
-                f"Expected exactly one PKG-INFO in {path.name}; "
+                f"Expected exactly one top-level PKG-INFO in {path.name}; "
                 f"found {len(members)}"
             )
         handle = archive.extractfile(members[0])
