@@ -237,20 +237,32 @@ def main():
             and sys.platform.startswith("linux")
         ):
             cmake_args.append("-DWITH_QT=5")
-            subprocess.check_call("patch -p1 < patches/patchQtPlugins", shell=True)
+            # Do not reapply the Qt packaging patch on incremental rebuilds.
+            if 'install(DIRECTORY "${_sk_qt_plugin_dir}" DESTINATION lib/qt)' not in open("opencv/CMakeLists.txt", encoding="utf-8").read():
+                subprocess.check_call("patch -p1 < patches/patchQtPlugins", shell=True)
 
             if sys.platform.startswith("linux"):
                 rearrange_cmake_output_data["cv2.qt.plugins.platforms"] = [
                     (r"lib/qt/plugins/platforms/libqxcb\.so")
                 ]
 
-                # add fonts for Qt5
-                fonts = []
-                for file in os.listdir("/usr/share/fonts/dejavu"):
-                    if file.endswith(".ttf"):
-                        fonts.append(
-                            (r"lib/qt/fonts/dejavu/%s\.ttf" % file.split(".")[0])
-                        )
+                # Support common DejaVu locations (Ubuntu and other Linux).
+                font_root = "/usr/share/fonts"
+                font_dir = next(
+                    (os.path.join(font_root, subdir)
+                     for subdir in ("dejavu", "truetype/dejavu")
+                     if os.path.isdir(os.path.join(font_root, subdir))),
+                    None,
+                )
+                if font_dir is None:
+                    raise RuntimeError("DejaVu TTF fonts are required for Qt GUI packaging")
+                font_rel = os.path.relpath(font_dir, font_root).replace(os.sep, "/")
+                fonts = [
+                    r"lib/qt/fonts/%s/%s\.ttf" % (font_rel, re.escape(os.path.splitext(file)[0]))
+                    for file in sorted(os.listdir(font_dir)) if file.endswith(".ttf")
+                ]
+                if not fonts:
+                    raise RuntimeError("No DejaVu TTF fonts found for Qt GUI packaging")
 
                 rearrange_cmake_output_data["cv2.qt.fonts"] = fonts
 
