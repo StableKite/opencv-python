@@ -1,4 +1,6 @@
 [build-system]
+build-backend = "_binary_wheel_backend"
+backend-path = ["."]
 requires = [
   "numpy<2.0; python_version<'3.9'",
   "numpy==2.0.2; python_version>='3.9' and python_version<'3.13'",
@@ -13,5 +15,3 @@ requires = [
 ]
 # use a custom backend to manage CMake check / installation
 # see https://scikit-build.readthedocs.io/en/latest/usage.html#adding-cmake-as-building-requirement-only-if-not-installed-or-too-low-a-version
-build-backend = "backend"
-backend-path = ["_build_backend"]

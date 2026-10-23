@@ -11,3 +11,6 @@ recursive-include opencv *
 recursive-include opencv_contrib *
 recursive-include patches *
 recursive-include scripts *.py
+
+# Include the PEP 517 delivery adapter in source distributions.
+include _binary_wheel_backend.py binary_wheels.json README.binary-wheels.md
