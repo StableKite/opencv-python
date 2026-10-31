@@ -8,16 +8,17 @@ import platform
 import subprocess
 import sys
 import sysconfig
+from typing import Any, Dict, List, Optional, cast
 
 ROOT = Path(__file__).resolve().parent
 MANIFEST = ROOT / 'binary_wheels.json'
 
 
-def _manifest():
-    return json.loads(MANIFEST.read_text(encoding='utf8'))
+def _manifest() -> Dict[str, Any]:
+    return cast(Dict[str, Any], json.loads(MANIFEST.read_text(encoding='utf8')))
 
 
-def _normalized_project(path):
+def _normalized_project(path: Path) -> str:
     import tomllib
     data = tomllib.loads(path.read_text(encoding='utf8'))
     build = data.get('build-system', {})
@@ -26,7 +27,7 @@ def _normalized_project(path):
     return hashlib.sha256(json.dumps(data, sort_keys=True).encode()).hexdigest()
 
 
-def _asset(config_settings=None):
+def _asset(config_settings: Optional[Dict[str, Any]] = None) -> Optional[Dict[str, str]]:
     if (config_settings or sys.version_info[:2] != (3, 15)
             or not sysconfig.get_config_var('Py_GIL_DISABLED')
             or sys.platform != 'linux' or platform.machine() != 'x86_64'):
@@ -39,6 +40,16 @@ def _asset(config_settings=None):
     if (libc != 'glibc'
             or tuple(map(int, version.split('.'))) < tuple(data['minimum_glibc'])):
         return None
+    if data.get('runtime_system_libraries'):
+        # Several ABI majors may coexist; find_library() reports only the newest.
+        try:
+            ldconfig = next(p for p in ('/sbin/ldconfig', '/usr/sbin/ldconfig') if Path(p).is_file())
+            inventory = subprocess.check_output([ldconfig, '-p'], universal_newlines=True, timeout=30)
+            sonames = {line.split()[0] for line in inventory.splitlines() if 'x86-64' in line and '=>' in line}
+            if not set(data['runtime_system_libraries'].values()).issubset(sonames):
+                return None
+        except (OSError, StopIteration, subprocess.SubprocessError):
+            return None
     for name, digest in data['delivery_source_hashes'].items():
         path = ROOT / name
         if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
@@ -64,7 +75,7 @@ def _asset(config_settings=None):
     return data['artifact']
 
 
-def _source():
+def _source() -> Any:
     data = _manifest()
     if data.get('initialize_source_submodules'):
         subprocess.check_call(
@@ -76,13 +87,13 @@ def _source():
     return getattr(backend, attribute) if separator else backend
 
 
-def get_requires_for_build_wheel(config_settings=None):
+def get_requires_for_build_wheel(config_settings: Optional[Dict[str, Any]] = None) -> List[str]:
     if _asset(config_settings):
         return ['pip']
     return _source().get_requires_for_build_wheel(config_settings)
 
 
-def build_wheel(wheel_directory, config_settings=None, metadata_directory=None):
+def build_wheel(wheel_directory: str, config_settings: Optional[Dict[str, Any]] = None, metadata_directory: Optional[str] = None) -> str:
     asset = _asset(config_settings)
     if asset is None:
         return _source().build_wheel(wheel_directory, config_settings, metadata_directory)
@@ -94,7 +105,7 @@ def build_wheel(wheel_directory, config_settings=None, metadata_directory=None):
     return asset['filename']
 
 
-def __getattr__(name):
+def __getattr__(name: str) -> Any:
     # Let pip obtain metadata from its retained wheel, avoiding a second download.
     if name == 'prepare_metadata_for_build_wheel' and _asset() is not None:
         raise AttributeError(name)
