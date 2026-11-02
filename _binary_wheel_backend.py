@@ -44,7 +44,7 @@ def _asset(config_settings: Optional[Dict[str, Any]] = None) -> Optional[Dict[st
             'ENABLE_JAVA', 'OPENCV_PYTHON_PACKAGE_NAME')):
         return None
     data = _manifest()
-    if platform_key == 'linux-x86_64':
+    if sys.platform == 'linux':
         libc, version = platform.libc_ver()
         if (libc != 'glibc'
                 or tuple(map(int, version.split('.'))) < tuple(data['minimum_glibc'])):

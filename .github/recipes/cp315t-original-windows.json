@@ -1,0 +1,99 @@
+{
+  "status": "Retained original complete source-built Windows CP315.2t wheel, engineering qualification; no installed-files repack, no retag, no native source change.",
+  "wrapper_source_commit": "b304bc2ad314ce0c99352010fe63c52091dcf76e",
+  "native_source_commit": "6a18c3424987b7a2bf76377fc2464cc36421b378",
+  "version": "5.1.0+b304bc2",
+  "wheel": {
+    "filename": "opencv_python-5.1.0+b304bc2-cp315-cp315t-win_amd64.whl",
+    "sha256": "9db81328f8ad9b70fa1ddd77f7a3080bfe05a99c6433fda5c0aabac1b4d16b0d",
+    "bytes": 47837569
+  },
+  "SDK": {
+    "repo": "https://github.com/opencv/opencv_3rdparty",
+    "commit": "06dc20cad65dc7fcf784f70c95d46750520889a7",
+    "official_binary_git_blob": "117f46365f6bba0d0553989a96d86e10d2d89d39",
+    "wheel_plugin_name": "cv2/opencv_videoio_ffmpeg510_64.dll",
+    "plugin_sha256": "7aabff029d1fa47cf56ede4dbbe05dc62da3208f07cd16471d4c966a33f9aa31",
+    "plugin_bytes": 30876160,
+    "whole_original_wheel": {
+      "filename": "opencv_python-5.1.0+b304bc2-cp315-cp315t-win_amd64.whl",
+      "bytes": 47837569,
+      "sha256": "9db81328f8ad9b70fa1ddd77f7a3080bfe05a99c6433fda5c0aabac1b4d16b0d"
+    },
+    "native_payloads": {
+      "cv2/cv2.cp315t-win_amd64.pyd": {
+        "bytes": 95098368,
+        "sha256": "0eba6fc10e296927c2f654556141de259b2e99f2e49d35512e10ed6da8e2f478"
+      },
+      "cv2/opencv_videoio_ffmpeg510_64.dll": {
+        "bytes": 30876160,
+        "sha256": "7aabff029d1fa47cf56ede4dbbe05dc62da3208f07cd16471d4c966a33f9aa31"
+      }
+    }
+  },
+  "SDK_declared_sources": [
+    {
+      "name": "opencv",
+      "commit": "a0a660fcb1e58a295e6caa6aee64ed4d369b0181",
+      "declared_ref": "a0a660fcb1e58a295e6caa6aee64ed4d369b0181",
+      "url": "https://codeload.github.com/opencv/opencv/tar.gz/a0a660fcb1e58a295e6caa6aee64ed4d369b0181",
+      "bytes": 81508684,
+      "sha256": "5d97bddd4c5d2895dddafe6aff211b9fc1add564887263b7c062f2699660bf1d"
+    },
+    {
+      "name": "FFmpeg",
+      "commit": "b08d7969c550a804a59511c7b83f2dd8cc0499b8",
+      "declared_ref": "n7.1",
+      "url": "https://codeload.github.com/FFmpeg/FFmpeg/tar.gz/b08d7969c550a804a59511c7b83f2dd8cc0499b8",
+      "bytes": 15900622,
+      "sha256": "02fa6d9827da3b6786e4df821218cc036db2b4481e7f48267c2dcda695633afc"
+    },
+    {
+      "name": "libvpx",
+      "commit": "1024874c5919305883187e2953de8fcb4c3d7fa6",
+      "declared_ref": "v1.16.0",
+      "url": "https://codeload.github.com/webmproject/libvpx/tar.gz/1024874c5919305883187e2953de8fcb4c3d7fa6",
+      "bytes": 5637178,
+      "sha256": "274c00c0b21f03a9152e324b1989f73b74268aa8545b39ef5faccc50fdb56393"
+    },
+    {
+      "name": "openh264",
+      "commit": "8c7008aeb6335e7d36ab0d9a023a63f82a8eaac0",
+      "declared_ref": "v2.5.0",
+      "url": "https://codeload.github.com/cisco/openh264/tar.gz/8c7008aeb6335e7d36ab0d9a023a63f82a8eaac0",
+      "bytes": 60304002,
+      "sha256": "0a12daa5a7fefc3acf5f6485fe21159399351cd4b83af80dde525fa520f17820"
+    },
+    {
+      "name": "aom",
+      "declared_ref": "v3.14.1",
+      "repo": "https://aomedia.googlesource.com/aom",
+      "commit": "03087864cf4bea6abb0d28f95cf7843511413d8f",
+      "url": "https://aomedia.googlesource.com/aom/+archive/03087864cf4bea6abb0d28f95cf7843511413d8f.tar.gz",
+      "bytes": 6438381,
+      "sha256": "a42b40d5ccd808c7f1e81b8bab0b7fe19520af39436d78be5d7e60f3c9a0f6d0"
+    }
+  ],
+  "corresponding_sources": {
+    "url": "https://github.com/StableKite/opencv-python/releases/download/cp315t-portable-20261102-1/opencv_python-5.1.0+b304bc2-Windows-corresponding-sources.tar.gz",
+    "sha256": "726d12dbe2ee6566ae874f53f97d5b54ea44be83775c574407ec63df19e2e62d",
+    "bytes": 213446032
+  },
+  "producer": {
+    "Python": "3.15.2t MSC1951",
+    "compiler": "MSVC19.50.35730",
+    "VS": "18 2026",
+    "CMake": "4.2.3-msvc3",
+    "numpy": "2.5.4",
+    "scikit_build": "0.19.1",
+    "jobs": 1,
+    "real_compiler_probes": "PASS, supported cleanup=False retains debug evidence instead of post-success rmtree sharing failure",
+    "source_PEP517_hook": "Original hook, all original build features retained",
+    "private_MSBuild_isolation": "VcpkgEnabled=false and CMAKE_VS_GLOBALS=VcpkgEnabled=false for this producer only prevents unrelated user-wide Protobuf header injection",
+    "global_OS_compiler_security_change": false,
+    "consumer_GIL_or_build_flags_required": false
+  },
+  "qualification": "Fresh wholewheel install, all ZIP CRC/RECORD; actual324XVID/MJPG/FFV1frames serial+8nativeThreads,512text,256images,pipcheck,naturalGIL OFF/flags None/normalexit.",
+  "optional_Windows_H264": "Only2.5 public API header and dynamic loading wrapper compiled into upstream plugin; no Cisco codec DLL or implementation is bundled in this Windows wheel. H264 runtime encoder requires separately installed compatible Cisco DLL; not claimed qualified here.",
+  "qualification_limits": "No physical camera/GPU/interactive desktop coverage; not an independent acceptance or vendor SDK bit-reproducibility claim."
+}

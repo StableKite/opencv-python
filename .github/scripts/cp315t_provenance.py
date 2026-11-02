@@ -49,6 +49,10 @@ def run(manifest_path: Path, output: Path, local_wheel: Path | None,
     assert getattr(sys.flags, 'gil') is None and not gil()
     for name in ('PYTHON_GIL', 'PYTHONHOME', 'PYTHONPATH', 'LD_PRELOAD', 'LD_LIBRARY_PATH'):
         assert not os.environ.get(name), name
+    # Check inherited flags before OpenCV's original bootstrap adds its own
+    # companion-library path to this process environment.
+    import cv2
+    assert not gil()
     key = 'linux-x86_64' if sys.platform == 'linux' else 'windows-x86_64'
     assert platform.machine().lower() in ('amd64', 'x86_64')
     manifest = document(manifest_path.read_text(encoding='utf8'))
@@ -115,7 +119,8 @@ def run(manifest_path: Path, output: Path, local_wheel: Path | None,
                 assert Path(str(dist.locate_file(name))).read_bytes() == data, name
             assert all(name.endswith('/') or name in recorded for name in names)
             original_checked = len(recorded) - 1
-            provenance = document(archive.read(info_dir + '/STABLEKITE_NATIVE_PROVENANCE.json').decode())
+            provenance = (document(archive.read(info_dir + '/STABLEKITE_NATIVE_PROVENANCE.json').decode())
+                          if sys.platform == 'linux' else {})
     native: dict[str, object] = {}
     if sys.platform == 'linux':
         sdk = mapping(provenance['SDK_runtime'])
@@ -143,11 +148,30 @@ def run(manifest_path: Path, output: Path, local_wheel: Path | None,
         native = {'DSOs_verified': len(files), 'FFmpeg_version': ffmpeg_version,
                   'FFmpeg_license': license_text, 'actual_ELF_closure': closure,
                   'no_direct_system_HarfBuzz': True}
+    else:
+        providers = mapping(asset['native_payloads'])
+        actual_pe = {str(p).replace('\\', '/'): Path(str(dist.locate_file(p)))
+                     for p in dist.files or [] if str(p).lower().endswith(('.pyd', '.dll'))}
+        assert set(actual_pe) == set(providers)
+        for name, provider in providers.items():
+            assert sha256(actual_pe[name]) == mapping(provider)['sha256'], name
+        notices = dist.read_text('LICENSE-3RD-PARTY.txt') or ''
+        assert 'FFmpeg' in notices and 'GNU LESSER GENERAL PUBLIC LICENSE' in notices
+        build = cv2.getBuildInformation()
+        for version in ('61.19.100', '61.7.100', '59.39.100', '8.3.100'):
+            assert version in build, version
+        native = {'PE_files_verified': len(actual_pe), 'FFmpeg_supplier_commit': asset['SDK_commit'],
+                  'FFmpeg_supplier_license_notice': 'LGPL 2.1 or later (original supplier notice retained)',
+                  'FFmpeg_codec_library_impl': '7.1, source reference and original plugin Git blob in supplier provenance',
+                  'original_whole_source_built_wheel': True, 'build_information': build,
+                  'H264_runtime_encoder': 'Requires external compatible Cisco codec DLL; not bundled or qualified here'}
     assert not gil()
     result = {'status': 'PASS', 'python': sys.version, 'GIL': gil(), 'flags_gil': getattr(sys.flags, 'gil'),
               'version': dist.version, 'direct_url': direct, 'original_wheel_sha256': wheel_sha,
               'original_wheel_entries_verified_against_installed_bytes': original_checked,
               'installed_RECORD_entries_verified': installed_checked, 'ZIP_CRC': True,
+              'inherited_GIL_and_loader_overrides': False,
+              'opencv_bootstrap_LD_LIBRARY_PATH': os.environ.get('LD_LIBRARY_PATH'),
               'expected_default_commit': expected_commit, 'local_wheel_gate_only': expected_commit is None,
               'actual_native': native}
     _ = output.write_text(json.dumps(result, indent=2) + '\n', encoding='utf8')

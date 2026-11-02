@@ -1,8 +1,8 @@
 # CPython 3.15t engineering wheel delivery
 
 Normal `pip install "opencv-python @ git+https://github.com/StableKite/opencv-python.git"`
-uses the retained, SHA256-verified native wheel on Linux x86_64, CPython3.15t,
-glibc2.39 or newer. No GIL override, loader variable, system codec SDK, or pip
+uses retained, SHA256-verified native wheels on Windows x86_64 CPython3.15t and
+Linux x86_64 CPython3.15t with glibc2.39 or newer. No GIL override, loader variable, system codec SDK, or pip
 feature flag is required. This is an engineering prerelease with explicit source
 and test provenance; it is not an upstream release or a full hardware acceptance.
 
@@ -27,7 +27,17 @@ to 5.1.0+b304bc2.stablekite.1 for this SDK packaging revision. No Python ABI tag
 was relabeled. Linux's measured minimum symbol policy is glibc2.38; automatic
 delivery conservatively starts at tested Ubuntu24.04's glibc2.39.
 
-Windows and all unsupported target/options retain the original source backend.
+Windows retains the entire original source-produced wheel 5.1.0+b304bc2, SHA
+9db81328f8ad9b70fa1ddd77f7a3080bfe05a99c6433fda5c0aabac1b4d16b0d.
+Its original FFmpeg7.1 plugin matches the immutable upstream provider Git blob.
+Its separate vendor-declared source/license bundle and exact native build/probe
+receipt are linked in `.github/recipes/cp315t-original-windows.json`. The original
+Windows source wheel has no SDK packaging mutation, so its original local source
+version stays b304bc2; Linux increments stablekite.1 for its changed shared SDK.
+No Cisco codec implementation DLL is bundled; optional Windows H264 encoding
+with a separately supplied Cisco DLL is not part of the scoped three-codec gate.
+
+All unsupported target/options retain the original source backend.
 Custom compiler flags, CMAKE_ARGS, headless/contrib/rolling/Java/package-name
 options, config settings, and changed native sources use that backend. Delivery
 source hashes and normalized pyproject configuration bind the retained wheel to

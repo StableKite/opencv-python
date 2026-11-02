@@ -21,7 +21,6 @@ jobs:
         working-directory: ${{ runner.temp }}
         run: python -m pip install "opencv-python @ git+https://github.com/StableKite/opencv-python.git"
       - name: Retained original wheel, all installed bytes, real SDK and natural GIL
-        if: runner.os == 'Linux'
         run: python .github/scripts/cp315t_provenance.py binary_wheels.json provenance.json --expected-commit "${{ github.sha }}"
       - name: Real video codecs and eight native threads, natural GIL
         run: python .github/scripts/cp315t_video_contract.py

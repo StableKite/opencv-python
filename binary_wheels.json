@@ -22,21 +22,23 @@
     ".github/scripts/cp315t_video_contract.py",
     ".github/scripts/cp315t_provenance.py",
     ".github/recipes/cp315t-portable-linux.json",
-    ".github/pyright-cp315t.json"
+    ".github/pyright-cp315t.json",
+    ".github/recipes/cp315t-original-windows.json"
   ],
   "delivery_source_hashes": {
-    "_binary_wheel_backend.py": "75a477f057e91549bdc5fb6d7af2ac82aca8ffdfd1586063854be20210c72d0c",
-    "README.binary-wheels.md": "f91999afefdfe5d657ef58ce3d3767629a205de49c423c4505ffbf74f219f2ad",
+    "_binary_wheel_backend.py": "5ccbbc17131070b5f9c6fd387f91287ac3599efdeb363d3517a01e26f036e6cd",
+    "README.binary-wheels.md": "a3ea4cb7378c68ac9584c969ad1faf5aa79a4e5f01b0bbd7fb7fd6747e5b8935",
     "pyproject.toml": "49433c0cb586f69d11458cdb2213a9fe8646972b762f99646606d9a1571a541d",
     "MANIFEST.in": "90241e267fe95693fa9544dd861d3c96f71aada90bf9e8a1207a7c851e844460",
     ".gitmodules": "0626a8535962f5eb14226cd65b0b67423ca8f825eead906da0f4e66f12b94ef3",
     ".github/scripts/cp315t_text_contract.py": "2f343efc9e8a3c0c8cb9cb4f0dd8bc3f4a4dd96cb33aec1167f8d76edecf08d0",
     ".github/scripts/gtk_link_contract.cmake": "ba55bf9f17443e508da0d9ed87a130e7590417ab6197f82f9c53646a0b23f2ea",
-    ".github/workflows/cp315t-delivery.yml": "5d05fa3d322a22a5e2e4dbc43325f5b4ef2d21c48875a8fcd48e9211cf805075",
+    ".github/workflows/cp315t-delivery.yml": "dbedbfb4c46c1ae40da15f4c42ec0703c46b3502b5b0d50f2efbf7b2dfee7ff9",
     ".github/scripts/cp315t_video_contract.py": "c7ab4c6786493fa9b2f73279a3ca7f649f31ad970aa1a0e4520fb3413c2c32a6",
-    ".github/scripts/cp315t_provenance.py": "488f28f05adb2d967f586c68929bc1661fef35e9051ba697ded5fa93a3d972f5",
+    ".github/scripts/cp315t_provenance.py": "3532a883a1a1271e2f7787e4362da0319bc850b8e84a70d49fa63b1fd9535031",
     ".github/recipes/cp315t-portable-linux.json": "503daf1e6a3be523cf7dccef94f30e0ed6c01573a67aee56be8959d8df5d82fb",
-    ".github/pyright-cp315t.json": "a4e032f915491b52e29bf91e893d5ac5d4dd39a8eb44d45b7a17c1c63ae0e342"
+    ".github/pyright-cp315t.json": "a4e032f915491b52e29bf91e893d5ac5d4dd39a8eb44d45b7a17c1c63ae0e342",
+    ".github/recipes/cp315t-original-windows.json": "597ef0e1add2b8eb18cb94d11cbe342adb6b7fc5e1517375ac52ec90d1c37e97"
   },
   "initialize_source_submodules": true,
   "artifacts": {
@@ -46,6 +48,24 @@
       "bytes": 64951663,
       "version": "5.1.0+b304bc2.stablekite.1",
       "url": "https://github.com/StableKite/opencv-python/releases/download/cp315t-portable-20261102-1/opencv_python-5.1.0+b304bc2.stablekite.1-cp315-cp315t-manylinux_2_38_x86_64.manylinux_2_39_x86_64.whl"
+    },
+    "windows-x86_64": {
+      "filename": "opencv_python-5.1.0+b304bc2-cp315-cp315t-win_amd64.whl",
+      "sha256": "9db81328f8ad9b70fa1ddd77f7a3080bfe05a99c6433fda5c0aabac1b4d16b0d",
+      "bytes": 47837569,
+      "version": "5.1.0+b304bc2",
+      "url": "https://github.com/StableKite/opencv-python/releases/download/cp315t-portable-20261102-1/opencv_python-5.1.0+b304bc2-cp315-cp315t-win_amd64.whl",
+      "native_payloads": {
+        "cv2/cv2.cp315t-win_amd64.pyd": {
+          "bytes": 95098368,
+          "sha256": "0eba6fc10e296927c2f654556141de259b2e99f2e49d35512e10ed6da8e2f478"
+        },
+        "cv2/opencv_videoio_ffmpeg510_64.dll": {
+          "bytes": 30876160,
+          "sha256": "7aabff029d1fa47cf56ede4dbbe05dc62da3208f07cd16471d4c966a33f9aa31"
+        }
+      },
+      "SDK_commit": "06dc20cad65dc7fcf784f70c95d46750520889a7"
     }
   },
   "corresponding_sources": {
@@ -56,5 +76,10 @@
     "SDK_source_packages": 16,
     "license_files": 248
   },
-  "source_hash_normalization": "UTF-8 delivery text with LF line endings; native sources remain protected by Git diff."
+  "source_hash_normalization": "UTF-8 delivery text with LF line endings; native sources remain protected by Git diff.",
+  "Windows_corresponding_sources": {
+    "url": "https://github.com/StableKite/opencv-python/releases/download/cp315t-portable-20261102-1/opencv_python-5.1.0+b304bc2-Windows-corresponding-sources.tar.gz",
+    "sha256": "726d12dbe2ee6566ae874f53f97d5b54ea44be83775c574407ec63df19e2e62d",
+    "bytes": 213446032
+  }
 }
