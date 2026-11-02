@@ -17,14 +17,25 @@ jobs:
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: 3.15t
-      - name: Linux system SDK profile
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libavcodec-dev libavformat-dev libavutil-dev libswscale-dev libavdevice-dev libjpeg-dev libwebp-dev libpng-dev libtiff-dev libopenjp2-7-dev
       - name: Ordinary pip from default branch
         working-directory: ${{ runner.temp }}
         run: python -m pip install "opencv-python @ git+https://github.com/StableKite/opencv-python.git"
-      - name: Actual native text and eight OS threads, natural GIL off
+      - name: Retained original wheel, all installed bytes, real SDK and natural GIL
+        if: runner.os == 'Linux'
+        run: python .github/scripts/cp315t_provenance.py binary_wheels.json provenance.json --expected-commit "${{ github.sha }}"
+      - name: Real video codecs and eight native threads, natural GIL
+        run: python .github/scripts/cp315t_video_contract.py
+      - name: Actual native text and eight native threads, natural GIL
         run: python .github/scripts/cp315t_text_contract.py
+      - name: Strict typing of delivery backend and new native qualification tools
+        run: |
+          python -m pip install pyright==1.1.414
+          python -m pyright --project .github/pyright-cp315t.json
       - run: python -m pip check
+      - name: Keep actual qualification output
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cp315t-native-${{ runner.os }}
+          path: provenance.json
+          if-no-files-found: warn

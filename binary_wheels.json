@@ -18,40 +18,43 @@
     ".gitmodules",
     ".github/scripts/cp315t_text_contract.py",
     ".github/scripts/gtk_link_contract.cmake",
-    ".github/workflows/cp315t-delivery.yml"
+    ".github/workflows/cp315t-delivery.yml",
+    ".github/scripts/cp315t_video_contract.py",
+    ".github/scripts/cp315t_provenance.py",
+    ".github/recipes/cp315t-portable-linux.json",
+    ".github/pyright-cp315t.json"
   ],
   "delivery_source_hashes": {
-    "_binary_wheel_backend.py": "51f13eb73b88088b9e1cefb766e1e3651bb5c21a525265ae3e0a6b7774d20988",
-    "README.binary-wheels.md": "54148d84c38c07a06493385dbfe882ab8d02cbd2da1d6878ba378051f27dcf87",
+    "_binary_wheel_backend.py": "75a477f057e91549bdc5fb6d7af2ac82aca8ffdfd1586063854be20210c72d0c",
+    "README.binary-wheels.md": "f91999afefdfe5d657ef58ce3d3767629a205de49c423c4505ffbf74f219f2ad",
     "pyproject.toml": "49433c0cb586f69d11458cdb2213a9fe8646972b762f99646606d9a1571a541d",
     "MANIFEST.in": "90241e267fe95693fa9544dd861d3c96f71aada90bf9e8a1207a7c851e844460",
     ".gitmodules": "0626a8535962f5eb14226cd65b0b67423ca8f825eead906da0f4e66f12b94ef3",
     ".github/scripts/cp315t_text_contract.py": "2f343efc9e8a3c0c8cb9cb4f0dd8bc3f4a4dd96cb33aec1167f8d76edecf08d0",
     ".github/scripts/gtk_link_contract.cmake": "ba55bf9f17443e508da0d9ed87a130e7590417ab6197f82f9c53646a0b23f2ea",
-    ".github/workflows/cp315t-delivery.yml": "d49057fdd92e6d1c37c334566fa54d44fb3cc6705150bfddc435e7a844acdfc9"
-  },
-  "artifact": {
-    "filename": "opencv_python-5.1.0+b304bc2-cp315-cp315t-linux_x86_64.whl",
-    "url": "https://github.com/StableKite/opencv-python/releases/download/cp315t-harfbuzz-engineering-20261031/opencv_python-5.1.0+b304bc2-cp315-cp315t-linux_x86_64.whl",
-    "sha256": "75932a142dafaf897cdcbe1452414758d1a939dc8ce1a74c91db29148630689c"
+    ".github/workflows/cp315t-delivery.yml": "5d05fa3d322a22a5e2e4dbc43325f5b4ef2d21c48875a8fcd48e9211cf805075",
+    ".github/scripts/cp315t_video_contract.py": "c7ab4c6786493fa9b2f73279a3ca7f649f31ad970aa1a0e4520fb3413c2c32a6",
+    ".github/scripts/cp315t_provenance.py": "488f28f05adb2d967f586c68929bc1661fef35e9051ba697ded5fa93a3d972f5",
+    ".github/recipes/cp315t-portable-linux.json": "503daf1e6a3be523cf7dccef94f30e0ed6c01573a67aee56be8959d8df5d82fb",
+    ".github/pyright-cp315t.json": "a4e032f915491b52e29bf91e893d5ac5d4dd39a8eb44d45b7a17c1c63ae0e342"
   },
   "initialize_source_submodules": true,
-  "runtime_system_libraries": {
-    "avcodec": "libavcodec.so.60",
-    "avformat": "libavformat.so.60",
-    "avutil": "libavutil.so.58",
-    "swscale": "libswscale.so.7",
-    "avdevice": "libavdevice.so.60",
-    "gtk-3": "libgtk-3.so.0",
-    "gdk-3": "libgdk-3.so.0",
-    "cairo": "libcairo.so.2",
-    "gdk_pixbuf-2.0": "libgdk_pixbuf-2.0.so.0",
-    "jpeg": "libjpeg.so.8",
-    "webp": "libwebp.so.7",
-    "webpmux": "libwebpmux.so.3",
-    "webpdemux": "libwebpdemux.so.2",
-    "png16": "libpng16.so.16",
-    "tiff": "libtiff.so.6",
-    "openjp2": "libopenjp2.so.7"
-  }
+  "artifacts": {
+    "linux-x86_64": {
+      "filename": "opencv_python-5.1.0+b304bc2.stablekite.1-cp315-cp315t-manylinux_2_38_x86_64.manylinux_2_39_x86_64.whl",
+      "sha256": "afa9195d54a22b4cbe1311022ed194c2e87cca46cc68ad76ddb9536ff29dba60",
+      "bytes": 64951663,
+      "version": "5.1.0+b304bc2.stablekite.1",
+      "url": "https://github.com/StableKite/opencv-python/releases/download/cp315t-portable-20261102-1/opencv_python-5.1.0+b304bc2.stablekite.1-cp315-cp315t-manylinux_2_38_x86_64.manylinux_2_39_x86_64.whl"
+    }
+  },
+  "corresponding_sources": {
+    "url": "https://github.com/StableKite/opencv-python/releases/download/cp315t-portable-20261102-1/opencv_python-5.1.0+b304bc2.stablekite.1-corresponding-sources.tar.gz",
+    "bytes": 366664283,
+    "sha256": "1eedaf6099c447e55af985e31090d88ae7c09906cd97ee82f7c4492c412cc2f7",
+    "Ubuntu_source_packages": 46,
+    "SDK_source_packages": 16,
+    "license_files": 248
+  },
+  "source_hash_normalization": "UTF-8 delivery text with LF line endings; native sources remain protected by Git diff."
 }

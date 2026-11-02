@@ -1,23 +1,42 @@
-# CPython 3.15t dependency delivery
+# CPython 3.15t engineering wheel delivery
 
-A normal `pip install` from the default branch uses the recorded original
-linux_x86_64 wheel on Linux x86_64, CPython 3.15t, glibc 2.39+ and the checked
-Ubuntu 24.04 system-library profile. Its source is wrapper b304bc2ad314ce0c99352010fe63c52091dcf76e
-and native OpenCV 6a18c3424987b7a2bf76377fc2464cc36421b378.
+Normal `pip install "opencv-python @ git+https://github.com/StableKite/opencv-python.git"`
+uses the retained, SHA256-verified native wheel on Linux x86_64, CPython3.15t,
+glibc2.39 or newer. No GIL override, loader variable, system codec SDK, or pip
+feature flag is required. This is an engineering prerelease with explicit source
+and test provenance; it is not an upstream release or a full hardware acceptance.
 
-The wheel retains GTK3, Pango, video codecs and image codecs. It uses the actual
-system GTK3, FFmpeg 6 and image-library ABIs listed in `binary_wheels.json`.
-The backend checks those SONAMEs before selecting the artifact. This is an
-original platform wheel, not a manylinux portability claim. Other profiles,
-source changes and explicit compiler options use the original source build.
-No consumer build flag or GIL override is required.
+The native OpenCV source remains 6a18c3424987b7a2bf76377fc2464cc36421b378. Packaging
+repairs the previously retained original source wheel (wrapper b304bc2) and uses
+a clean current shared FFmpeg6.1.6/OpenH2642.7.0 LGPL SDK. No GPL FFmpeg, x264,
+x265 or postproc payload is included. The existing Intel IPP notice is retained;
+IPP is a separately licensed binary component and its source is not claimed.
+The final native `.text` and all19 public exports match the original raw wheel.
 
-The GTK3 link fix removes only a direct system HarfBuzz reference when OpenCV
-uses bundled HarfBuzz. Every other GTK dependency and the system-only HarfBuzz
-case are retained. Native text rendering, independent threads, image/video
-regressions, ELF closure and an explicit GIL-on control qualified this artifact.
-The earlier init-only upstream PR #30134 is unchanged.
+Every actual bundled DSO has full input/output hashes and original provider
+provenance in the wheel's STABLEKITE_NATIVE_PROVENANCE.json. Package-specific
+license texts, complete selected corresponding source archives, exact native
+configure/build/test commands, source patches and public recipe Git archives
+are retained in the matching source release asset. The source bundle also gives
+instructions for rebuilding/replacing compatible LGPL shared components.
+See `.github/recipes/cp315t-portable-linux.json` for pinned sources, hashes,
+qualification scope and the original native test limitations.
 
-An experimental auditwheel closure failed during dynamic loading and is not
-delivered. It is retained locally as failed evidence. These are engineering
-dependency artifacts, not a StableKite product release.
+The platform tag remains cp315-cp315t. The distribution local version increments
+to 5.1.0+b304bc2.stablekite.1 for this SDK packaging revision. No Python ABI tag
+was relabeled. Linux's measured minimum symbol policy is glibc2.38; automatic
+delivery conservatively starts at tested Ubuntu24.04's glibc2.39.
+
+Windows and all unsupported target/options retain the original source backend.
+Custom compiler flags, CMAKE_ARGS, headless/contrib/rolling/Java/package-name
+options, config settings, and changed native sources use that backend. Delivery
+source hashes and normalized pyproject configuration bind the retained wheel to
+the reviewed native source. A missing mandatory integrity check does not silently
+accept a changed wheel. In particular an eligible download failure is an error;
+it does not silently build a feature-reduced Linux wheel.
+
+CI installs the public default by ordinary pip, checks expected PEP610 commit,
+downloads the retained original wheel independently, verifies ZIP CRC and every
+RECORD hash against installed bytes, probes actual LGPL SDK/83DSO closure, tests
+real video/text/threads and requires natural GIL OFF and normal process exit.
+Physical camera/GPU/interactive desktop coverage is not claimed by these gates.

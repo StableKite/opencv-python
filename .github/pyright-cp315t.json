@@ -1,0 +1,9 @@
+{
+  "include": [
+    "../_binary_wheel_backend.py",
+    "scripts/cp315t_video_contract.py",
+    "scripts/cp315t_provenance.py"
+  ],
+  "typeCheckingMode": "strict",
+  "pythonVersion": "3.15"
+}

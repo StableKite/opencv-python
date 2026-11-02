@@ -1,0 +1,78 @@
+{
+  "status": "Engineering prerelease, qualified Linux x86_64 CPython3.15t; original source fallback remains for other targets/options.",
+  "native_commit": "6a18c3424987b7a2bf76377fc2464cc36421b378",
+  "source_wrapper_commit": "b304bc2ad314ce0c99352010fe63c52091dcf76e",
+  "original_raw_wheel_sha256": "75932a142dafaf897cdcbe1452414758d1a939dc8ce1a74c91db29148630689c",
+  "final_wheel": {
+    "filename": "opencv_python-5.1.0+b304bc2.stablekite.1-cp315-cp315t-manylinux_2_38_x86_64.manylinux_2_39_x86_64.whl",
+    "version": "5.1.0+b304bc2.stablekite.1",
+    "bytes": 64951663,
+    "sha256": "afa9195d54a22b4cbe1311022ed194c2e87cca46cc68ad76ddb9536ff29dba60"
+  },
+  "corresponding_sources": {
+    "url": "https://github.com/StableKite/opencv-python/releases/download/cp315t-portable-20261102-1/opencv_python-5.1.0+b304bc2.stablekite.1-corresponding-sources.tar.gz",
+    "bytes": 366664283,
+    "sha256": "1eedaf6099c447e55af985e31090d88ae7c09906cd97ee82f7c4492c412cc2f7",
+    "Ubuntu_source_packages": 46,
+    "SDK_source_packages": 16,
+    "license_files": 248
+  },
+  "FFmpeg": {
+    "version": "6.1.6",
+    "url": "https://ffmpeg.org/releases/ffmpeg-6.1.6.tar.xz",
+    "signature": "https://ffmpeg.org/releases/ffmpeg-6.1.6.tar.xz.asc",
+    "verified_pinned_fingerprint": "FCF986EA15E6E293A5644F10B4322F04D67658D8",
+    "actual_runtime_license": "LGPL version 3 or later",
+    "configure_argv": "In corresponding source bundle: build-evidence/opencv-current-FFmpeg616-build-20261102-v1/spec.json",
+    "original_default_FATE": "PASS, external sample corpus not downloaded/tested"
+  },
+  "OpenH264": {
+    "commit": "1bca62311e447fd9c39fc93de2c4b96cd5ce971c",
+    "version": "2.7.0",
+    "tests_passed": 664,
+    "original_disabled": 39
+  },
+  "SDK_providers": {
+    "current_PyAV_factory": "f1e20b376d668de3e262ce960f9ef269321377c1",
+    "historical_PNG_factory": "bac889417e26be29615cb6a3f38318151fed55cd",
+    "all_bundled_DSO": 83,
+    "own_FFmpeg_OpenH264": 8,
+    "Ubuntu_Noble": 58,
+    "current_SDK_support": 16,
+    "historical_SDK_PNG": 1,
+    "HarfBuzz": "Exact Ubuntu8.3.0, all121 closure symbols; codec-SDK variant lacks required FreeType integration. No new native OpenCV patch."
+  },
+  "producer": {
+    "auditwheel": "6.8.2",
+    "patchelf": "0.19.3",
+    "jobs": 1,
+    "compiler": "GCC13.3",
+    "GIL_override": false,
+    "consumer_loader_override": false
+  },
+  "ABI_proof": [
+    {
+      "label": "original-raw",
+      "wheel": "/mnt/a/Codex/SK-Dependencies-A307-20261030/opencv-harfbuzz-clean-source-v2/wheels/opencv_python-5.1.0+b304bc2-cp315-cp315t-linux_x86_64.whl",
+      "cv2_sha256": "f80f3f765fc6e3541d0688fec2be7d544f195b8602bde8870566ce87d30e2c2f",
+      "text_sha256": "e539a588fe7da5370788545c3d54390a77ea1f3362414ec7c7e7b3ccb07abb98",
+      "text_bytes": 66224402,
+      "exports_sha256": "75a04e32f319f23e8f0159516b151f8a45f68689d508f9640e46f14dea21dfcf",
+      "exports": 19,
+      "objcopy_exit": 0
+    },
+    {
+      "label": "final-portable",
+      "wheel": "/mnt/a/Codex/SK-Dependencies-A307-20261030/opencv-current-final-Linux-wheel-20261102-v1/opencv_python-5.1.0+b304bc2.stablekite.1-cp315-cp315t-manylinux_2_38_x86_64.manylinux_2_39_x86_64.whl",
+      "cv2_sha256": "06a71922e11eb27a77706cae17fdbbb33db712a647a9cebecfaa7412c6513906",
+      "text_sha256": "e539a588fe7da5370788545c3d54390a77ea1f3362414ec7c7e7b3ccb07abb98",
+      "text_bytes": 66224402,
+      "exports_sha256": "75a04e32f319f23e8f0159516b151f8a45f68689d508f9640e46f14dea21dfcf",
+      "exports": 19,
+      "objcopy_exit": 0
+    }
+  ],
+  "gate": "Fresh original wheel install; all ZIP/RECORD and installed bytes; actual GTK/Pango/SDK closure; 432 XVID/MJPG/FFV1/H264 frames serial+8nativeThreads;512text+256images; natural GIL OFF. H264 lossy qualification records errors and checks frame signal ordering/correlation, not bit exact.",
+  "hardware": "No physical camera/GPU/desktop hardware coverage claimed.",
+  "source_build": "Full original backend retained for unsupported targets, custom feature/compiler flags, changed native sources, older glibc. Windows continues original source backend until its separately qualified original wheel is retained."
+}

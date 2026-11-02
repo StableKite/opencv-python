@@ -29,30 +29,32 @@ def _normalized_project(path: Path) -> str:
 
 def _asset(config_settings: Optional[Dict[str, Any]] = None) -> Optional[Dict[str, str]]:
     if (config_settings or sys.version_info[:2] != (3, 15)
-            or not sysconfig.get_config_var('Py_GIL_DISABLED')
-            or sys.platform != 'linux' or platform.machine() != 'x86_64'):
+            or not sysconfig.get_config_var('Py_GIL_DISABLED')):
+        return None
+    machine = platform.machine().lower()
+    if sys.platform == 'linux' and machine == 'x86_64':
+        platform_key = 'linux-x86_64'
+    elif sys.platform == 'win32' and machine in ('amd64', 'x86_64'):
+        platform_key = 'windows-x86_64'
+    else:
         return None
     if any(os.environ.get(name) for name in
-           ('CFLAGS', 'CXXFLAGS', 'CPPFLAGS', 'LDFLAGS', 'CC', 'CXX')):
+           ('CFLAGS', 'CXXFLAGS', 'CPPFLAGS', 'LDFLAGS', 'CC', 'CXX',
+            'CMAKE_ARGS', 'ENABLE_HEADLESS', 'ENABLE_CONTRIB', 'ENABLE_ROLLING',
+            'ENABLE_JAVA', 'OPENCV_PYTHON_PACKAGE_NAME')):
         return None
     data = _manifest()
-    libc, version = platform.libc_ver()
-    if (libc != 'glibc'
-            or tuple(map(int, version.split('.'))) < tuple(data['minimum_glibc'])):
-        return None
-    if data.get('runtime_system_libraries'):
-        # Several ABI majors may coexist; find_library() reports only the newest.
-        try:
-            ldconfig = next(p for p in ('/sbin/ldconfig', '/usr/sbin/ldconfig') if Path(p).is_file())
-            inventory = subprocess.check_output([ldconfig, '-p'], universal_newlines=True, timeout=30)
-            sonames = {line.split()[0] for line in inventory.splitlines() if 'x86-64' in line and '=>' in line}
-            if not set(data['runtime_system_libraries'].values()).issubset(sonames):
-                return None
-        except (OSError, StopIteration, subprocess.SubprocessError):
+    if platform_key == 'linux-x86_64':
+        libc, version = platform.libc_ver()
+        if (libc != 'glibc'
+                or tuple(map(int, version.split('.'))) < tuple(data['minimum_glibc'])):
             return None
+    artifact = cast(Optional[Dict[str, str]], data['artifacts'].get(platform_key))
+    if artifact is None:
+        return None
     for name, digest in data['delivery_source_hashes'].items():
         path = ROOT / name
-        if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
+        if not path.is_file() or hashlib.sha256(path.read_bytes().replace(b'\r\n', b'\n')).hexdigest() != digest:
             return None
     if _normalized_project(ROOT / 'pyproject.toml') != data['source_project']:
         return None
@@ -72,7 +74,7 @@ def _asset(config_settings: Optional[Dict[str, Any]] = None) -> Optional[Dict[st
             return None
     except (OSError, subprocess.SubprocessError):
         return None
-    return data['artifact']
+    return artifact
 
 
 def _source() -> Any:
