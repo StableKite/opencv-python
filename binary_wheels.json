@@ -23,31 +23,35 @@
     ".github/scripts/cp315t_provenance.py",
     ".github/recipes/cp315t-portable-linux.json",
     ".github/pyright-cp315t.json",
-    ".github/recipes/cp315t-original-windows.json"
+    ".github/recipes/cp315t-original-windows.json",
+    ".github/scripts/cp315t_gtk_runtime_wheel.py",
+    ".github/scripts/cp315t_gtk_contract.py"
   ],
   "delivery_source_hashes": {
     "_binary_wheel_backend.py": "5ccbbc17131070b5f9c6fd387f91287ac3599efdeb363d3517a01e26f036e6cd",
-    "README.binary-wheels.md": "a3ea4cb7378c68ac9584c969ad1faf5aa79a4e5f01b0bbd7fb7fd6747e5b8935",
+    "README.binary-wheels.md": "4c79343284251c216a46cbc0ea0e2fabdea3e79a15bd62aa66bfe12c3bedc5cd",
     "pyproject.toml": "49433c0cb586f69d11458cdb2213a9fe8646972b762f99646606d9a1571a541d",
     "MANIFEST.in": "90241e267fe95693fa9544dd861d3c96f71aada90bf9e8a1207a7c851e844460",
     ".gitmodules": "0626a8535962f5eb14226cd65b0b67423ca8f825eead906da0f4e66f12b94ef3",
     ".github/scripts/cp315t_text_contract.py": "2f343efc9e8a3c0c8cb9cb4f0dd8bc3f4a4dd96cb33aec1167f8d76edecf08d0",
     ".github/scripts/gtk_link_contract.cmake": "ba55bf9f17443e508da0d9ed87a130e7590417ab6197f82f9c53646a0b23f2ea",
-    ".github/workflows/cp315t-delivery.yml": "dbedbfb4c46c1ae40da15f4c42ec0703c46b3502b5b0d50f2efbf7b2dfee7ff9",
+    ".github/workflows/cp315t-delivery.yml": "114d90f92bb297ada213181e5e7d13e082ce113b3c50c4f15308e078b08ed08e",
     ".github/scripts/cp315t_video_contract.py": "c7ab4c6786493fa9b2f73279a3ca7f649f31ad970aa1a0e4520fb3413c2c32a6",
     ".github/scripts/cp315t_provenance.py": "3532a883a1a1271e2f7787e4362da0319bc850b8e84a70d49fa63b1fd9535031",
-    ".github/recipes/cp315t-portable-linux.json": "503daf1e6a3be523cf7dccef94f30e0ed6c01573a67aee56be8959d8df5d82fb",
-    ".github/pyright-cp315t.json": "a4e032f915491b52e29bf91e893d5ac5d4dd39a8eb44d45b7a17c1c63ae0e342",
-    ".github/recipes/cp315t-original-windows.json": "597ef0e1add2b8eb18cb94d11cbe342adb6b7fc5e1517375ac52ec90d1c37e97"
+    ".github/recipes/cp315t-portable-linux.json": "f685f916cac9c4e62fa08e57fd460ea9128ede484e56578c5835bbf91e7aabba",
+    ".github/pyright-cp315t.json": "e86326ec8dee61f63e1b342d7cd7b3631808edf9607bbcb3b0828b1a421d656a",
+    ".github/recipes/cp315t-original-windows.json": "597ef0e1add2b8eb18cb94d11cbe342adb6b7fc5e1517375ac52ec90d1c37e97",
+    ".github/scripts/cp315t_gtk_runtime_wheel.py": "3d8f717589cb7596df02652666bd849d4300ae9aeb1eef4ea8cecc13d8d5cbe2",
+    ".github/scripts/cp315t_gtk_contract.py": "6fdc409822e22e2aedaa8bfc91c1854b119e432a2102402464905f0c007021bd"
   },
   "initialize_source_submodules": true,
   "artifacts": {
     "linux-x86_64": {
-      "filename": "opencv_python-5.1.0+b304bc2.stablekite.1-cp315-cp315t-manylinux_2_38_x86_64.manylinux_2_39_x86_64.whl",
-      "sha256": "afa9195d54a22b4cbe1311022ed194c2e87cca46cc68ad76ddb9536ff29dba60",
-      "bytes": 64951663,
-      "version": "5.1.0+b304bc2.stablekite.1",
-      "url": "https://github.com/StableKite/opencv-python/releases/download/cp315t-portable-20261102-1/opencv_python-5.1.0+b304bc2.stablekite.1-cp315-cp315t-manylinux_2_38_x86_64.manylinux_2_39_x86_64.whl"
+      "filename": "opencv_python-5.1.0+b304bc2.stablekite.2-cp315-cp315t-manylinux_2_38_x86_64.manylinux_2_39_x86_64.whl",
+      "version": "5.1.0+b304bc2.stablekite.2",
+      "bytes": 64972278,
+      "sha256": "bbe21c9d9c3da91e3853966fdbfa15391d105b2903a64480493d5096665a1ad7",
+      "url": "https://github.com/StableKite/opencv-python/releases/download/cp315t-gtk3-20261103-1/opencv_python-5.1.0+b304bc2.stablekite.2-cp315-cp315t-manylinux_2_38_x86_64.manylinux_2_39_x86_64.whl"
     },
     "windows-x86_64": {
       "filename": "opencv_python-5.1.0+b304bc2-cp315-cp315t-win_amd64.whl",
@@ -69,9 +73,9 @@
     }
   },
   "corresponding_sources": {
-    "url": "https://github.com/StableKite/opencv-python/releases/download/cp315t-portable-20261102-1/opencv_python-5.1.0+b304bc2.stablekite.1-corresponding-sources.tar.gz",
-    "bytes": 366664283,
-    "sha256": "1eedaf6099c447e55af985e31090d88ae7c09906cd97ee82f7c4492c412cc2f7",
+    "url": "https://github.com/StableKite/opencv-python/releases/download/cp315t-gtk3-20261103-1/opencv_python-5.1.0+b304bc2.stablekite.2-corresponding-sources.tar.gz",
+    "bytes": 360867439,
+    "sha256": "5beee47cbe1449afd2589b794de3f25d420970a7abe85b76d3e338794fc5874b",
     "Ubuntu_source_packages": 46,
     "SDK_source_packages": 16,
     "license_files": 248

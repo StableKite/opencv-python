@@ -26,6 +26,12 @@ jobs:
         run: python .github/scripts/cp315t_video_contract.py
       - name: Actual native text and eight native threads, natural GIL
         run: python .github/scripts/cp315t_text_contract.py
+      - name: Actual GTK3 window lifecycle and system plugins
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y xvfb xauth libgtk-3-0t64 dconf-gsettings-backend librsvg2-common
+          xvfb-run -a --server-args="-screen 0 640x480x24 -nolisten tcp" python .github/scripts/cp315t_gtk_contract.py --output gtk-contract.json
       - name: Strict typing of delivery backend and new native qualification tools
         run: |
           python -m pip install pyright==1.1.414
@@ -36,5 +42,7 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: cp315t-native-${{ runner.os }}
-          path: provenance.json
+          path: |
+            provenance.json
+            gtk-contract.json
           if-no-files-found: warn

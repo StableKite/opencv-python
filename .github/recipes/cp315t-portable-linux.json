@@ -4,15 +4,15 @@
   "source_wrapper_commit": "b304bc2ad314ce0c99352010fe63c52091dcf76e",
   "original_raw_wheel_sha256": "75932a142dafaf897cdcbe1452414758d1a939dc8ce1a74c91db29148630689c",
   "final_wheel": {
-    "filename": "opencv_python-5.1.0+b304bc2.stablekite.1-cp315-cp315t-manylinux_2_38_x86_64.manylinux_2_39_x86_64.whl",
-    "version": "5.1.0+b304bc2.stablekite.1",
-    "bytes": 64951663,
-    "sha256": "afa9195d54a22b4cbe1311022ed194c2e87cca46cc68ad76ddb9536ff29dba60"
+    "filename": "opencv_python-5.1.0+b304bc2.stablekite.2-cp315-cp315t-manylinux_2_38_x86_64.manylinux_2_39_x86_64.whl",
+    "version": "5.1.0+b304bc2.stablekite.2",
+    "bytes": 64972278,
+    "sha256": "bbe21c9d9c3da91e3853966fdbfa15391d105b2903a64480493d5096665a1ad7"
   },
   "corresponding_sources": {
-    "url": "https://github.com/StableKite/opencv-python/releases/download/cp315t-portable-20261102-1/opencv_python-5.1.0+b304bc2.stablekite.1-corresponding-sources.tar.gz",
-    "bytes": 366664283,
-    "sha256": "1eedaf6099c447e55af985e31090d88ae7c09906cd97ee82f7c4492c412cc2f7",
+    "url": "https://github.com/StableKite/opencv-python/releases/download/cp315t-gtk3-20261103-1/opencv_python-5.1.0+b304bc2.stablekite.2-corresponding-sources.tar.gz",
+    "bytes": 360867439,
+    "sha256": "5beee47cbe1449afd2589b794de3f25d420970a7abe85b76d3e338794fc5874b",
     "Ubuntu_source_packages": 46,
     "SDK_source_packages": 16,
     "license_files": 248
@@ -72,7 +72,159 @@
       "objcopy_exit": 0
     }
   ],
-  "gate": "Fresh original wheel install; all ZIP/RECORD and installed bytes; actual GTK/Pango/SDK closure; 432 XVID/MJPG/FFV1/H264 frames serial+8nativeThreads;512text+256images; natural GIL OFF. H264 lossy qualification records errors and checks frame signal ordering/correlation, not bit exact.",
+  "gate": "All original wheel/installed RECORD/83 providers, real GTK3 window lifecycle with both import orders, existing real codecs/native-thread/native text/font/image regressions, natural GIL OFF; hardware coverage remains separately scoped.",
   "hardware": "No physical camera/GPU/desktop hardware coverage claimed.",
-  "source_build": "Full original backend retained for unsupported targets, custom feature/compiler flags, changed native sources, older glibc. Windows continues original source backend until its separately qualified original wheel is retained."
+  "source_build": "Full original backend retained for unsupported targets, custom feature/compiler flags, changed native sources, older glibc. Windows continues original source backend until its separately qualified original wheel is retained.",
+  "GTK3_plugin_runtime": {
+    "cause": "Auditwheel-hashed GTK/GObject SONAMEs load second GIO/GdkPixbuf runtimes when ordinary system modules resolve the public SONAMEs.",
+    "producer": ".github/scripts/cp315t_gtk_runtime_wheel.py",
+    "shared_SONAMEs": {
+      "libpango-1-44fbb30e.0.so.0.5200.1": "libpango-1.0.so.0",
+      "libatk-1-d312f3db.0.so.0.25209.1": "libatk-1.0.so.0",
+      "libpangocairo-1-229b50cd.0.so.0.5200.1": "libpangocairo-1.0.so.0",
+      "libpangoft2-1-cfcd528c.0.so.0.5200.1": "libpangoft2-1.0.so.0",
+      "libgdk_pixbuf-2-f9f51980.0.so.0.4200.10": "libgdk_pixbuf-2.0.so.0",
+      "libcairo-gobject-61b4b6cb.so.2.11800.0": "libcairo-gobject.so.2",
+      "libgtk-3-0611fd19.so.0.2409.32": "libgtk-3.so.0",
+      "libgdk-3-0b52fb81.so.0.2409.32": "libgdk-3.so.0",
+      "libcairo-3144bd59.so.2.11800.0": "libcairo.so.2",
+      "libgio-2-373801fa.0.so.0.8000.0": "libgio-2.0.so.0"
+    },
+    "ABI": [
+      {
+        "file": "opencv_python.libs/libatk-1-d312f3db.0.so.0.25209.1",
+        "before_SHA256": "ae14790a56356df0141776e3c450c8c49475d540a5f7992ecb70d32a81939dfb",
+        "after_SHA256": "6a9345f68cbad0b7c03e9e293a90049d46751637ade25bdd732119ac83d79b23",
+        "text_and_exports_unchanged": {
+          "text_SHA256": "2d596863e09cf6f71ac8525c3285c69dbee8c3c3c4c082a3135b6f88565aec69",
+          "text_bytes": 59120,
+          "exports_SHA256": "4c88ce6af1b08a91e08d681b30981838f9b8679a9b46611e1fa16ca7a7fac600",
+          "exports": 299
+        }
+      },
+      {
+        "file": "opencv_python.libs/libatk-bridge-2-366fcd2f.0.so.0.0.0",
+        "before_SHA256": "ba4f04c1ad85197bf8262d48abd46f9ed1ca91900f52afc45298a6861ff969f2",
+        "after_SHA256": "5542928ec8a5ac948181b1887fa91ebf9f53b0a20fbc70d50e378b4f5581de68",
+        "text_and_exports_unchanged": {
+          "text_SHA256": "e74b20dd397f22739a6c3f3da7315aa29e35c7aa6210aa8b532e0ded49d728cd",
+          "text_bytes": 93154,
+          "exports_SHA256": "fa6964c1780047f19b634fd5ef7e4fc1070982e70bb8439a54e1fd234b3bd7dd",
+          "exports": 131
+        }
+      },
+      {
+        "file": "opencv_python.libs/libcairo-3144bd59.so.2.11800.0",
+        "before_SHA256": "8c3b2795af1fc76a17185b4917bfa6f77244b9fc44d38896090454b34a350761",
+        "after_SHA256": "58eb3c5771af2b96751a52bbe8149fc020c824624e5cfdc17ceace7068d02c2f",
+        "text_and_exports_unchanged": {
+          "text_SHA256": "a7c6cb0aa4f3c4d17113f665a5f6b449b0a8060c37399ac891503e4e9434393f",
+          "text_bytes": 973391,
+          "exports_SHA256": "8acf83dbde1a6c79a83c8bf761eb2cc9f2633eacf851012ca7c707d443ad388a",
+          "exports": 420
+        }
+      },
+      {
+        "file": "opencv_python.libs/libcairo-gobject-61b4b6cb.so.2.11800.0",
+        "before_SHA256": "986624e712271e489f2794cdc638b9bc836375a1556f8077a5f0f077f3631f54",
+        "after_SHA256": "076f845efb77f0c12a64c85778498da465895de31ab69e6723098834d5dc16a6",
+        "text_and_exports_unchanged": {
+          "text_SHA256": "4154aaee35778f5b7319cefcd1e260edd7ac6995257dd58fe15253ff88e19d40",
+          "text_bytes": 5306,
+          "exports_SHA256": "a2bf1dcfa90ece464ff1ced5853c37517dbf0e0de4ab6b8f6780269f1b8d6a55",
+          "exports": 35
+        }
+      },
+      {
+        "file": "opencv_python.libs/libgdk-3-0b52fb81.so.0.2409.32",
+        "before_SHA256": "1864b7905e80bb68175f3aebcc80442a914563943bd0491196682d867fd09e4b",
+        "after_SHA256": "4e33703dc8fa8bcd85f5496f9c6226eafac4a81a5f3212c85c03c0c1127c8278",
+        "text_and_exports_unchanged": {
+          "text_SHA256": "33a58cf15c650836850783004a01dcee89d9b49be87d0263dbfda5bf25bb670f",
+          "text_bytes": 514517,
+          "exports_SHA256": "1509fe68fe5c04b1b9b24703679dbb56de2a7c46ed93d44451680b29171542f4",
+          "exports": 761
+        }
+      },
+      {
+        "file": "opencv_python.libs/libgdk_pixbuf-2-f9f51980.0.so.0.4200.10",
+        "before_SHA256": "a39942d3eff58c0820052c9a059adf4f8073826bad2a61b451088e379dae82ad",
+        "after_SHA256": "670a018383c1c56fc70d7a6ed493a55fa3b80dea53a28f7ae402c38affac29a4",
+        "text_and_exports_unchanged": {
+          "text_SHA256": "9f184f0858e1fc5d27bfd109562b3caeaedf0008eae7eb4b5dfcd31c871af98d",
+          "text_bytes": 100637,
+          "exports_SHA256": "27e3929380438061ddfd9139825377ede106cfe51ae3e6c48081fd4cc4eae6e0",
+          "exports": 131
+        }
+      },
+      {
+        "file": "opencv_python.libs/libgio-2-373801fa.0.so.0.8000.0",
+        "before_SHA256": "f49fc3931149e45231febe95ce7d18cf03916afd7c6d66e4adf6b3280e744b64",
+        "after_SHA256": "b05229a10d1ec2f88c4659795fbd3b6b05d84124f1346bc89a2e2f0816998fe9",
+        "text_and_exports_unchanged": {
+          "text_SHA256": "2dda1f7c7df67e4a7694158eb6f7df50f646f58a755dcfab518a1c147ee46c0e",
+          "text_bytes": 1110950,
+          "exports_SHA256": "cb647b337b0c652f3cce98f00b7ef5f9b6ccdf792ed911063603fb39efbd4f68",
+          "exports": 2107
+        }
+      },
+      {
+        "file": "opencv_python.libs/libgtk-3-0611fd19.so.0.2409.32",
+        "before_SHA256": "74a086c3c6966eb6cfed64f90a5225696794ac526af4103c0639508a77d53254",
+        "after_SHA256": "2fac143710ed85a9dcdabaa138d337bdf07231c62d3e23e7aaf0df191445139b",
+        "text_and_exports_unchanged": {
+          "text_SHA256": "edf6ba92361146cce025c8cb343b5b52c6ee4c0480cee78bf770f7da706f31c7",
+          "text_bytes": 3784684,
+          "exports_SHA256": "389c0ca9fdc6a1bf602d9e66138e077f4c44f800bacbffb23b9dd96e2273065d",
+          "exports": 4574
+        }
+      },
+      {
+        "file": "opencv_python.libs/libpango-1-44fbb30e.0.so.0.5200.1",
+        "before_SHA256": "7df8d89048a8cf1abe92c03c5aff8741400854c17fbd0dcb66deb90b517530ac",
+        "after_SHA256": "152ee3f6ccb61bc7ebdd00d967bf858249bd7f79cc012da343c8e936b3cd465f",
+        "text_and_exports_unchanged": {
+          "text_SHA256": "49552a29cedaef49d62d95e16fd7b506708b57b4d4cb021de5c4d8d03e8dfa15",
+          "text_bytes": 224455,
+          "exports_SHA256": "56a7291e6604692b9d51041eae84f65f6e87467bcab77e76d961493504c66354",
+          "exports": 499
+        }
+      },
+      {
+        "file": "opencv_python.libs/libpangocairo-1-229b50cd.0.so.0.5200.1",
+        "before_SHA256": "f8248e5d6736e2d3f032014b731696e8e429eddde5f20d30a0d73436cada27e6",
+        "after_SHA256": "cb9aac51c7bb80cf158cfa6e54de7f0cbe3c04218a95003274bcbc8b4fcd49a0",
+        "text_and_exports_unchanged": {
+          "text_SHA256": "e0507b231fada2b44fabfec0eaa29957041a514c7a958194bb82c83df8bda726",
+          "text_bytes": 24948,
+          "exports_SHA256": "488cd9e57bbd88af5b1342baad4e0a64aca50930a3881196c38b19cb7456605b",
+          "exports": 33
+        }
+      },
+      {
+        "file": "opencv_python.libs/libpangoft2-1-cfcd528c.0.so.0.5200.1",
+        "before_SHA256": "ebc3ffeb1e8094da3b9b8a85a3460b709c3103eb917bc4c2a85e2d94fe460995",
+        "after_SHA256": "ae2303998492738ffe59e18b78192cf917ca2288569f4214ca84391227670fbe",
+        "text_and_exports_unchanged": {
+          "text_SHA256": "1088937828e0178ab5ab18e84e3daa6cf14f7be2f9a2728d80db1748f3312013",
+          "text_bytes": 41623,
+          "exports_SHA256": "36dc2d5ec4c4a49501bb6530a256e249cf2282cc6c0435f561d565bf812f7eb7",
+          "exports": 95
+        }
+      },
+      {
+        "file": "cv2/cv2.cpython-315t-x86_64-linux-gnu.so",
+        "before_SHA256": "19a96435c82c1daa90d804da706a9964a1eaf3aa6321e4e6987a0daf9ee41a33",
+        "after_SHA256": "6d5d65baaeb120436119d60efb66e01cba2014d9fabf69960faf0b8337aea3de",
+        "text_and_exports_unchanged": {
+          "text_SHA256": "e539a588fe7da5370788545c3d54390a77ea1f3362414ec7c7e7b3ccb07abb98",
+          "text_bytes": 66224402,
+          "exports_SHA256": "b06d01a9cb52417123a4148f5af5d9b2051b4662e0168d6a026c5a48fb790e40",
+          "exports": 19
+        }
+      }
+    ],
+    "qualification": "Fresh plain pip original wheel; real GTK3 namedWindow/imshow/waitKey/destroyAllWindows, supported AUTOSIZE/image rectangle, cv2-first and systemGTK-first, normal exit0; codec/native-thread and native text/font regressions; naturalOFF/flagsNone. No backend/GSettings/GIO selection override.",
+    "CI": "Required actual dispatch/readback; historical external Actions422 blocker is not a PASS."
+  }
 }

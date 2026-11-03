@@ -50,3 +50,23 @@ downloads the retained original wheel independently, verifies ZIP CRC and every
 RECORD hash against installed bytes, probes actual LGPL SDK/83DSO closure, tests
 real video/text/threads and requires natural GIL OFF and normal process exit.
 Physical camera/GPU/interactive desktop coverage is not claimed by these gates.
+
+
+## GTK3 system-module interoperability
+
+The Linux `.stablekite.2` wheel preserves the public SONAMEs of its ten
+GTK/GObject-family libraries. GIO and GdkPixbuf load system extension modules;
+those modules must share the same GType runtime as the bundled GTK libraries.
+Hash-renamed copies caused duplicate type registration, a blocked first window,
+and a GdkPixbuf SVG-loader failure after correcting GIO alone.
+
+The producer verifies the original SDK inputs, repairs SONAME/DT_NEEDED fields,
+and checks unchanged executable sections and exported symbols for every rewritten
+ELF. The original codec SDK, full GTK3 backend and natural GIL policy are retained.
+The source archive includes the exact producer and complete earlier native
+sources, licenses and clean-build evidence.
+
+Qualification includes real windows under Xvfb, image display/event processing,
+window destruction and normal process exit with both OpenCV-first and system
+GTK-first imports. The CI runs this regression through the ordinary default Git
+installation. CI execution and physical-device coverage have separate evidence.
